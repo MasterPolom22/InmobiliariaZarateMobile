@@ -5,10 +5,11 @@ import static androidx.lifecycle.AndroidViewModel_androidKt.getApplication;
 
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
-
-
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -23,7 +24,7 @@ import retrofit2.Response;
 
 
 
-    public class LoginViewModel extends ViewModel {
+    public class LoginViewModel extends AndroidViewModel {
 
         public enum Status { IDLE, LOADING, SUCCESS, ERROR }
 

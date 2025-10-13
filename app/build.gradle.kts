@@ -26,12 +26,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_10
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding = true
     }
+    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
@@ -47,6 +48,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

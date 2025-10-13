@@ -48,6 +48,14 @@ public class ApiClient {
         Call<PropietarioModel> actualizarProp(@Header("Authorization") String token, @Body PropietarioModel p);
 
 
+        @FormUrlEncoded
+        @PUT("api/Propietarios/changePassword")
+        Call<Void> changePassword(
+                @Header("Authorization") String token,
+                @Field("currentPassword") String currentPassword,
+                @Field("newPassword") String newPassword
+        );
+
     }
 
     public static void guardarToken(Context context, String token) {
