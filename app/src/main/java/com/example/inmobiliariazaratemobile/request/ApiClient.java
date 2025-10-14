@@ -6,6 +6,13 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.example.inmobiliariazaratemobile.model.InmuebleModel;
+import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.*;
+
 import com.example.inmobiliariazaratemobile.model.PropietarioModel;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -78,6 +85,66 @@ public class ApiClient {
         return sp.getString("token", null);
 
     }
+
+
+
+
+    public interface InmuebleService {
+
+        @GET("api/Inmuebles")
+        Call<List<InmuebleModel>> listar(@Header("Authorization") String bearer);
+
+        @GET("api/Inmuebles/{id}")
+        Call<InmuebleModel> obtener(@Header("Authorization") String bearer,
+                                    @Path("id") int id);
+
+        @POST("api/Inmuebles")
+        Call<InmuebleModel> crear(@Header("Authorization") String bearer,
+                                  @Body InmuebleModel body);
+
+        @PUT("api/Inmuebles/{id}")
+        Call<InmuebleModel> actualizar(@Header("Authorization") String bearer,
+                                       @Path("id") int id,
+                                       @Body InmuebleModel body);
+
+        @DELETE("api/Inmuebles/{id}")
+        Call<Void> eliminar(@Header("Authorization") String bearer,
+                            @Path("id") int id);
+
+        // Opcional si tu API lo tiene
+        @PUT("api/Inmuebles/{id}/disponible")
+        Call<InmuebleModel> toggleDisponible(@Header("Authorization") String bearer,
+                                             @Path("id") int id);
+
+
+
+
+        // Cambiar disponibilidad
+        @PUT("api/Inmuebles/{id}/disponible")
+        Call<InmuebleModel> setDisponible(@Header("Authorization") String bearer,
+                                          @Path("id") int id,
+                                          @Query("value") boolean value);
+
+        // Crear con foto (multipart). El backend debe aceptar estos nombres de parte.
+        @Multipart
+        @POST("api/Inmuebles")
+        Call<InmuebleModel> crear(@Header("Authorization") String bearer,
+                                  @Part("direccion") RequestBody direccion,
+                                  @Part("uso") RequestBody uso,
+                                  @Part("tipo") RequestBody tipo,
+                                  @Part("ambientes") RequestBody ambientes,
+                                  @Part("superficie") RequestBody superficie,
+                                  @Part("latitud") RequestBody latitud,
+                                  @Part("longitud") RequestBody longitud,
+                                  @Part("valor") RequestBody valor,
+                                  @Part("disponible") RequestBody disponible, // false por defecto
+                                  @Part MultipartBody.Part imagenFile); // opcional
+    }
+
+    private static InmuebleService INMUEBLE;
+
+
+
 
 }
 

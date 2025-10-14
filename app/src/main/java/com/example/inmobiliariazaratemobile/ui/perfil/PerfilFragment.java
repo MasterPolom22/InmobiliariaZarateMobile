@@ -3,7 +3,9 @@ package com.example.inmobiliariazaratemobile.ui.perfil;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.inmobiliariazaratemobile.databinding.FragmentPerfilBinding;
 import com.example.inmobiliariazaratemobile.model.PropietarioModel;
+
 public class PerfilFragment extends Fragment {
 
     private FragmentPerfilBinding b;
@@ -38,16 +41,17 @@ public class PerfilFragment extends Fragment {
             vm.toggleEditarGuardar(editado);
         });
 
+        b.btnCancelar.setOnClickListener(v -> vm.cancelarEdicion());
+
         b.btnCambiarPass.setOnClickListener(v -> mostrarDialogoCambioPass());
 
-        vm.propietario.observe(getViewLifecycleOwner(), p -> {
-            if (p != null) setUI(p);
-        });
+        vm.propietario.observe(getViewLifecycleOwner(), p -> { if (p != null) setUI(p); });
 
         vm.editMode.observe(getViewLifecycleOwner(), edit -> {
             boolean e = edit != null && edit;
             setEditable(e);
             b.btnEditarGuardar.setText(e ? "Guardar" : "Editar");
+            b.btnCancelar.setVisibility(e ? View.VISIBLE : View.GONE);
         });
 
         vm.ui.observe(getViewLifecycleOwner(), s -> {
@@ -60,7 +64,7 @@ public class PerfilFragment extends Fragment {
                 case SUCCESS:
                     b.progress.setVisibility(View.GONE);
                     b.lblMsg.setVisibility(View.GONE);
-                    Toast.makeText(requireContext(), s.message!=null? s.message:"OK", Toast.LENGTH_SHORT).show();
+                    if (s.message != null) Toast.makeText(requireContext(), s.message, Toast.LENGTH_SHORT).show();
                     break;
                 case ERROR:
                     b.progress.setVisibility(View.GONE);
@@ -76,8 +80,8 @@ public class PerfilFragment extends Fragment {
         vm.cargarPerfil();
     }
 
+    // ---- Solo tareas de vista ----
     private void setEditable(boolean e){
-        // id siempre bloqueado
         b.txtNombre.setEnabled(e);
         b.txtApellido.setEnabled(e);
         b.txtEmail.setEnabled(e);
@@ -93,8 +97,8 @@ public class PerfilFragment extends Fragment {
     }
 
     private PropietarioModel leerUI(){
-        PropietarioModel p = vm.propietario.getValue();
-        if (p == null) p = new PropietarioModel();
+        PropietarioModel base = vm.propietario.getValue();
+        PropietarioModel p = base != null ? base : new PropietarioModel();
         // No tocar Id
         p.setNombre(b.txtNombre.getText().toString().trim());
         p.setApellido(b.txtApellido.getText().toString().trim());
@@ -106,8 +110,6 @@ public class PerfilFragment extends Fragment {
     private String n(String s){ return s==null? "": s; }
 
     private void mostrarDialogoCambioPass(){
-        View content = getLayoutInflater().inflate(android.R.layout.simple_list_item_2, null);
-        // Mejor: armar manualmente dos EditText
         EditText etActual = new EditText(requireContext());
         etActual.setHint("Actual");
         etActual.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -135,6 +137,4 @@ public class PerfilFragment extends Fragment {
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
-
-
 }
