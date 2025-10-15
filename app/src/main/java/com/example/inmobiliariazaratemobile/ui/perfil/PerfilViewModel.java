@@ -45,7 +45,7 @@ public class PerfilViewModel extends AndroidViewModel {
             "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
             Pattern.CASE_INSENSITIVE
     );
-    private static final Pattern SOLO_DIGITOS_MIN7 = Pattern.compile("^\\d{7,}$");
+    private static final Pattern SOLO_DIGITOS_MIN3 = Pattern.compile("^\\d{7,}$");
 
     public PerfilViewModel(@NonNull Application app) { super(app); }
 
@@ -151,7 +151,7 @@ public class PerfilViewModel extends AndroidViewModel {
         if (isEmpty(p.getEmail())) return "Email es obligatorio";
         if (!EMAIL.matcher(p.getEmail().trim()).matches()) return "Email no válido";
         String tel = emptyToNull(p.getTelefono());
-        if (tel != null && !SOLO_DIGITOS_MIN7.matcher(tel).matches())
+        if (tel != null && !SOLO_DIGITOS_MIN3.matcher(tel).matches())
             return "Teléfono debe tener solo dígitos (mín. 7)";
         return null;
     }
@@ -159,10 +159,10 @@ public class PerfilViewModel extends AndroidViewModel {
     private String validarPassword(String actual, String nueva){
         if (isEmpty(actual) || isEmpty(nueva)) return "Complete ambas contraseñas";
         if (actual.equals(nueva)) return "La nueva contraseña debe ser distinta";
-        if (nueva.length() < 8) return "La contraseña debe tener al menos 8 caracteres";
+        if (nueva.length() < 3) return "La contraseña debe tener al menos 8 caracteres";
         boolean tieneLetra = nueva.matches(".*[A-Za-z].*");
         boolean tieneNumero = nueva.matches(".*\\d.*");
-        if (!(tieneLetra && tieneNumero)) return "Use letras y números";
+        if (!(tieneLetra || tieneNumero)) return "Use letras y números";
         return null;
     }
 

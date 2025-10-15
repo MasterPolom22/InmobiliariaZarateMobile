@@ -3,10 +3,16 @@ package com.example.inmobiliariazaratemobile.request;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.inmobiliariazaratemobile.model.InmuebleModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.example.inmobiliariazaratemobile.model.PropietarioModel;
+
+import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,8 +21,12 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class ApiClient {
     private static  String BASE_URL = "https://inmobiliariaulp-amb5hwfqaraweyga.canadacentral-01.azurewebsites.net/";
@@ -58,7 +68,23 @@ public class ApiClient {
 
 
 
+
     }
+
+
+
+
+    // ----- Inmuebles (solo listar para esta etapa) -----
+    public interface InmuebleService {
+        @GET("api/Inmuebles")
+        Call<List<InmuebleModel>> listar(@Header("Authorization") String bearer);
+
+
+    }
+
+
+
+
 
     public static void guardarToken(Context context, String token) {
 
