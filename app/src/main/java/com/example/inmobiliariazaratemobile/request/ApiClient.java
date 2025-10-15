@@ -43,6 +43,25 @@ public class ApiClient {
         return retrofit.create(InmoService.class);
     }
 
+    public static void guardarToken(Context context, String token) {
+
+        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putString("token", token);
+
+        editor.apply();
+
+    }
+    public static String leerToken(Context context) {
+
+        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+
+        return sp.getString("token", null);
+
+    }
+
 
 
     public interface InmoService{
@@ -66,44 +85,12 @@ public class ApiClient {
                 @Field("newPassword") String newPassword
         );
 
-
-
-
-    }
-
-
-
-
-    // ----- Inmuebles (solo listar para esta etapa) -----
-    public interface InmuebleService {
         @GET("api/Inmuebles")
-        Call<List<InmuebleModel>> listar(@Header("Authorization") String bearer);
+        Call<List<InmuebleModel>> getInmuebles(@Header("Authorization") String token);
 
 
     }
 
-
-
-
-
-    public static void guardarToken(Context context, String token) {
-
-        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sp.edit();
-
-        editor.putString("token", token);
-
-        editor.apply();
-
-    }
-    public static String leerToken(Context context) {
-
-        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
-
-        return sp.getString("token", null);
-
-    }
 
 }
 

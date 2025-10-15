@@ -17,4 +17,5 @@
     <string name="password">Contraseña</string>
     <string name="login">Ingresar</string>
     <string name="title_activity_login">Login</string>
+    <string name="add">ss</string>
 </resources>
