@@ -18,6 +18,9 @@ public class InmuebleModel implements Serializable{
     private int idPropietario;
     private PropietarioModel duenio;
 
+    public InmuebleModel() {
+    }
+
     public InmuebleModel(int idInmueble, PropietarioModel duenio, int idPropietario, boolean disponible, String imagen, double valor, double longitud, double latitud, double superficie, int ambientes, String tipo, String uso, String direccion) {
         this.idInmueble = idInmueble;
         this.duenio = duenio;

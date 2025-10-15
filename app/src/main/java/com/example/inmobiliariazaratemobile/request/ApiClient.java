@@ -77,7 +77,12 @@ public class ApiClient {
     // ----- Inmuebles (solo listar para esta etapa) -----
     public interface InmuebleService {
         @GET("api/Inmuebles")
-        Call<List<InmuebleModel>> listar(@Header("Authorization") String bearer);
+        Call<List<InmuebleModel>> getInmuebles(@Header("Authorization") String token);
+
+        @PUT("api/Propietarios/actualizar")
+        Call<PropietarioModel> actualizarProp(@Header("Authorization") String token, @Body PropietarioModel p);
+
+
 
 
     }
