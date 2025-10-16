@@ -44,9 +44,6 @@ public class InmueblesFragment extends Fragment {
             }
         });
 
-
-
-
         return binding.getRoot();
     }
 

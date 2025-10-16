@@ -19,10 +19,9 @@ import java.util.List;
 
 public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.InmuebleViewHolder>{
     private List<InmuebleModel> lista;
-    private Context  context;
+    private Context context;
 
-
-
+    public InmuebleAdapter(List<InmuebleModel> lista, Context context) {
         this.lista = lista;
         this.context = context;
     }
