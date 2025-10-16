@@ -23,7 +23,6 @@ public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.Inmueb
 
 
 
-    public InmuebleAdapter(List<InmuebleModel> lista, Context context) {
         this.lista = lista;
         this.context = context;
     }
