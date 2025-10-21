@@ -1,49 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/idCard"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    app:cardCornerRadius="16dp"
-    app:cardUseCompatPadding="true">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:padding="12dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="84dp"
-            android:layout_height="84dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/app_name"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvDireccion"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingStart="12dp"
-            android:orientation="vertical">
+            android:text="Dirección"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txtDireccion"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/txtTipoUso"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/txtValor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvValor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="$ 0" />
+
+    <ImageView
+        android:id="@+id/imgInmueble"
+        android:layout_width="match_parent"
+        android:layout_height="72dp" />
+
+    <TextView
+        android:id="@+id/tvTipoUso"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tipo · Uso" />
+
+</androidx.cardview.widget.CardView>
