@@ -23,8 +23,8 @@
         android:label="@string/menu_inmuebles"
         tools:layout="@layout/fragment_inmuebles" >
         <action
-            android:id="@+id/action_nav_inmuebles_to_detalleDeInmuebleFragment"
-            app:destination="@id/detalleDeInmuebleFragment" />
+            android:id="@+id/action_nav_inmuebles_to_detalleInmuebleFragment2"
+            app:destination="@id/detalleInmuebleFragment2" />
     </fragment>
 
     <fragment
@@ -45,12 +45,11 @@
         android:label="@string/menu_contratos"
         tools:layout="@layout/fragment_contratos" />
     <fragment
-        android:id="@+id/detalleDeInmuebleFragment"
-        android:name="com.example.inmobiliariazaratemobile.ui.inmuebles.DetalleDeInmuebleFragment"
-        android:label="fragment_detalle_de_inmueble"
-        tools:layout="@layout/fragment_detalle_de_inmueble" >
+        android:id="@+id/detalleInmuebleFragment2"
+        android:name="com.example.inmobiliariazaratemobile.ui.inmuebles.InmuebleDetalleFragment"
+        android:label="DetalleInmuebleFragment" >
         <action
-            android:id="@+id/action_detalleDeInmuebleFragment_to_nav_inmuebles2"
+            android:id="@+id/action_detalleInmuebleFragment2_to_nav_inmuebles"
             app:destination="@id/nav_inmuebles" />
     </fragment>
 </navigation>

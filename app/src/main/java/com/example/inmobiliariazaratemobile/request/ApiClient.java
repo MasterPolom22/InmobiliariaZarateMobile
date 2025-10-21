@@ -29,44 +29,45 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public class ApiClient {
-    public final static  String BASE_URL = "https://inmobiliariaulp-amb5hwfqaraweyga.canadacentral-01.azurewebsites.net/";
+    public static final String BASE_URL = "https://inmobiliariaulp-amb5hwfqaraweyga.canadacentral-01.azurewebsites.net/";
 
+    private static Retrofit retrofit;
+
+    private static Retrofit getRetrofit(){
+        if (retrofit == null){
+            Gson gson = new GsonBuilder().setLenient().create();
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+        }
+        return retrofit;
+    }
 
     public static InmoService getInmoService(){
-        Gson gson = new GsonBuilder().setLenient().create();
-
-        Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        return retrofit.create(InmoService.class);
+        return getRetrofit().create(InmoService.class);
     }
-
 
     public static void guardarToken(Context context, String token) {
-
-        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sp.edit();
-
-        editor.putString("token", token);
-
-        editor.apply();
-
+        String limpio = token == null ? null : token.replace("\"", "").trim();
+        context.getSharedPreferences("token.xml", Context.MODE_PRIVATE)
+                .edit().putString("token", limpio).apply();
     }
+
     public static String leerToken(Context context) {
-
-        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
-
-        return sp.getString("token", null);
-
+        return context.getSharedPreferences("token.xml", Context.MODE_PRIVATE)
+                .getString("token", null);
     }
 
-
+    public static String bearer(Context ctx){
+        String t = leerToken(ctx);
+        if (t == null) return null;
+        t = t.trim();
+        // Si ya viene con "Bearer " no lo agregues otra vez
+        return t.startsWith("Bearer ") ? t : "Bearer " + t;
+    }
 
     public interface InmoService{
-
         @FormUrlEncoded
         @POST("api/Propietarios/login")
         Call<String> loginForm(@Field("Usuario") String usuario, @Field("Clave") String clave);
@@ -77,41 +78,28 @@ public class ApiClient {
         @PUT("api/Propietarios/actualizar")
         Call<PropietarioModel> actualizarProp(@Header("Authorization") String token, @Body PropietarioModel p);
 
-
         @FormUrlEncoded
         @PUT("api/Propietarios/changePassword")
-        Call<Void> changePassword(
-                @Header("Authorization") String token,
-                @Field("currentPassword") String currentPassword,
-                @Field("newPassword") String newPassword
-        );
+        Call<Void> changePassword(@Header("Authorization") String token,
+                                  @Field("currentPassword") String currentPassword,
+                                  @Field("newPassword") String newPassword);
 
-        // GET /api/Inmuebles
         @GET("api/Inmuebles")
-        Call<List<InmuebleModel>> getInmuebles(
-                @Header("Authorization") String bearerToken
-        );
+        Call<List<InmuebleModel>> listarInmuebles(@Header("Authorization") String token);
 
-        // GET /api/Inmuebles/GetContratoVigente
+        @PUT("api/Inmuebles/actualizar")
+        Call<InmuebleModel> actualizarInmueble(@Header("Authorization") String token, @Body InmuebleModel inmueble);
+
+        // No usar aún (pasos 2 y 3)
         @GET("api/Inmuebles/GetContratoVigente")
-        Call<List<InmuebleModel>> getInmueblesConContratoVigente(
-                @Header("Authorization") String bearerToken
-        );
+        Call<List<InmuebleModel>> listarConContrato(@Header("Authorization") String bearer);
 
-        // POST /api/Inmuebles/cargar  multipart/form-data
         @Multipart
         @POST("api/Inmuebles/cargar")
         Call<InmuebleModel> cargarInmueble(
-                @Header("Authorization") String bearerToken,
-                @Part MultipartBody.Part imagen,               // nombre de parte: "imagen"
-                @Part("inmueble") RequestBody inmuebleJson     // nombre de parte: "inmueble"
+                @Header("Authorization") String bearer,
+                @Part MultipartBody.Part imagen,
+                @Part("inmueble") RequestBody inmuebleJson
         );
-
-
-
-
     }
-
 }
-
-

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.inmobiliariazaratemobile.R;
 import com.example.inmobiliariazaratemobile.databinding.ItemInmuebleBinding;
 import com.example.inmobiliariazaratemobile.model.InmuebleModel;
 import com.example.inmobiliariazaratemobile.request.ApiClient;
