@@ -11,93 +11,67 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.inmobiliariazaratemobile.databinding.FragmentInmueblesBinding;
+ import com.example.inmobiliariazaratemobile.R;
+ import com.example.inmobiliariazaratemobile.databinding.FragmentInmueblesBinding;
 import com.example.inmobiliariazaratemobile.model.InmuebleModel;
 import com.example.inmobiliariazaratemobile.request.ApiClient;
 import com.example.inmobiliariazaratemobile.databinding.FragmentDetalleInmuebleBinding;
 public class InmuebleDetalleFragment extends Fragment {
 
+    private InmuebleDetalleViewModel mViewModel;
+    private FragmentDetalleInmuebleBinding binding;
 
-    private FragmentDetalleInmuebleBinding b;
-    private InmuebleDetalleViewModel vm;
-
-    @Nullable @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        b = FragmentDetalleInmuebleBinding.inflate(inflater, container, false);
-        return b.getRoot();
+    public static InmuebleDetalleFragment newInstance() {
+        return new InmuebleDetalleFragment();
     }
 
-    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        vm = new ViewModelProvider(this).get(InmuebleDetalleViewModel.class);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentDetalleInmuebleBinding.inflate(inflater, container, false);
+        mViewModel = new ViewModelProvider(this).get(InmuebleDetalleViewModel.class);
 
-        // Recibir el inmueble del Bundle
         InmuebleModel arg = (InmuebleModel) getArguments().getSerializable("inmueble");
-        if(arg != null) vm.init(arg);
+        if(arg != null) mViewModel.init(arg);
 
-        // Observa el inmueble y pinta
-        vm.inmueble.observe(getViewLifecycleOwner(), i -> {
-            if(i == null) return;
-            b.etDireccion.setText(i.getDireccion());
-            b.etTipo.setText(i.getTipo());
-            b.etUso.setText(i.getUso());
-            b.etAmbientes.setText(String.valueOf(i.getAmbientes()));
-            b.etValor.setText(String.valueOf(i.getValor()));
-            b.swDisponible.setChecked(i.isDisponible());
-
-            // Imagen
-            String raw = i.getImagen();
-            String url = (raw == null || raw.isEmpty())
-                    ? null
-                    : (raw.startsWith("http") ? raw : ApiClient.BASE_URL + raw.replaceFirst("^/",""));
-            Glide.with(b.img.getContext())
-                    .load(url)
+        mViewModel.inmueble.observe(getViewLifecycleOwner(), i -> {
+            binding.tvIdInmueble.setText(String.valueOf(i.getIdInmueble()));
+            binding.tvDireccionI.setText(i.getDireccion());
+            binding.tvUsoI.setText(i.getUso());
+            binding.tvAmbientesI.setText(String.valueOf(i.getAmbientes()));
+            binding.tvLatitudI.setText(String.valueOf(i.getLatitud()));
+            binding.tvLongitudI.setText(String.valueOf(i.getLongitud()));
+            binding.tvValorI.setText(String.valueOf(i.getValor()));
+            Glide.with(this)
+                    .load(ApiClient.BASE_URL + i.getImagen())
                     .placeholder(android.R.drawable.ic_menu_gallery)
                     .error(android.R.drawable.stat_notify_error)
-                    .into(b.img);
+                    .into(binding.imgInmueble);
+            binding.checkDisponible.setChecked(i.isDisponible());
         });
 
-        // Eventos de UI delegados al VM (sin ifs de negocio)
-        b.swDisponible.setOnCheckedChangeListener((buttonView, isChecked) -> vm.setDisponible(isChecked));
-        b.btnGuardar.setOnClickListener(v -> {
-            // Actualiza campos editables al objeto y guarda
-            InmuebleModel cur = vm.inmueble.getValue();
-            if(cur != null){
-                InmuebleModel copy = new InmuebleModel();
-                copy.setIdInmueble(cur.getIdInmueble());
-                copy.setIdPropietario(cur.getIdPropietario());
-                copy.setDuenio(cur.getDuenio());
-                copy.setImagen(cur.getImagen());
+        binding.checkDisponible.setOnCheckedChangeListener((btn, checked) ->
+                mViewModel.actualizarDisponible(checked)
+        );
 
-                copy.setDireccion(String.valueOf(b.etDireccion.getText()));
-                copy.setTipo(String.valueOf(b.etTipo.getText()));
-                copy.setUso(String.valueOf(b.etUso.getText()));
-                try { copy.setAmbientes(Integer.parseInt(String.valueOf(b.etAmbientes.getText()))); } catch (Exception ignored) { copy.setAmbientes(cur.getAmbientes()); }
-                try { copy.setValor(Double.parseDouble(String.valueOf(b.etValor.getText()))); } catch (Exception ignored) { copy.setValor(cur.getValor()); }
-                copy.setSuperficie(cur.getSuperficie());
-                copy.setLatitud(cur.getLatitud());
-                copy.setLongitud(cur.getLongitud());
-                copy.setDisponible(b.swDisponible.isChecked());
-
-                vm.init(copy);      // refresca LiveData local
-                vm.guardarCambios(); // hace el PUT
-            }
+        mViewModel.status.observe(getViewLifecycleOwner(), s -> {
+            // feedback simple sin lógica de negocio
+            binding.checkDisponible.setEnabled(s != InmuebleDetalleViewModel.Status.SAVING);
         });
 
-        // Feedback mínimo de estado
-        vm.status.observe(getViewLifecycleOwner(), s -> {
-            if(s == InmuebleDetalleViewModel.Status.OK) {
-                b.btnGuardar.setEnabled(true);
-            } else if (s == InmuebleDetalleViewModel.Status.SAVING) {
-                b.btnGuardar.setEnabled(false);
-            } else if (s == InmuebleDetalleViewModel.Status.ERROR) {
-                b.btnGuardar.setEnabled(true);
-            }
+        mViewModel.obtenerInmueble(getArguments());
+        return binding.getRoot();
+
+        // evento UI -> VM
+        binding.checkDisponible.setOnCheckedChangeListener((btn, checked) -> {
+            mViewModel.toggleDisponible(checked);
         });
-    }
 
-    @Override public void onDestroyView() {
-        super.onDestroyView();
-        b = null;
-    }
+// feedback mínimo de estado (habilitar/deshabilitar el switch mientras guarda)
+        mViewModel.status.observe(getViewLifecycleOwner(), s -> {
+            binding.checkDisponible.setEnabled(s != InmuebleDetalleViewModel.Status.SAVING);
+        });
 
-}
+
+
+}}

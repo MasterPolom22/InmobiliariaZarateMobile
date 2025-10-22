@@ -101,5 +101,11 @@ public class ApiClient {
                 @Part MultipartBody.Part imagen,
                 @Part("inmueble") RequestBody inmuebleJson
         );
+
+        @PUT("api/Inmuebles/actualizar")
+        Call<InmuebleModel> actualizarDisponibilidad(
+                @Header("Authorization") String bearer,
+                @Body com.example.inmobiliariazaratemobile.request.dto.InmuebleDisponibleDto dto
+        );
     }
 }

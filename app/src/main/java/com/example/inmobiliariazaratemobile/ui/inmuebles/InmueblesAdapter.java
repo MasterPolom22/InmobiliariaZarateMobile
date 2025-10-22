@@ -18,6 +18,10 @@ import com.example.inmobiliariazaratemobile.request.ApiClient;
 
 public class InmueblesAdapter extends ListAdapter<InmuebleModel, InmueblesAdapter.VH> {
 
+    public interface OnItemClick { void onClick(InmuebleModel item); }
+    private OnItemClick onItemClick;
+    public void setOnItemClick(OnItemClick l){ this.onItemClick = l; }
+
     public InmueblesAdapter() {
         super(DIFF);
     }
@@ -52,6 +56,8 @@ public class InmueblesAdapter extends ListAdapter<InmuebleModel, InmueblesAdapte
                 .placeholder(android.R.drawable.ic_menu_gallery) // antes: R.drawable.ic_home_24
                 .error(android.R.drawable.stat_notify_error)
                 .into(h.img);
+
+        h.itemView.setOnClickListener(v -> { if(onItemClick!=null) onItemClick.onClick(it); });
     }
 
     static class VH extends RecyclerView.ViewHolder {

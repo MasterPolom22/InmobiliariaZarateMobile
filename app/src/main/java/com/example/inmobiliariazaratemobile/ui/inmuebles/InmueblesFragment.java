@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.inmobiliariazaratemobile.R;
 import com.example.inmobiliariazaratemobile.databinding.FragmentInmueblesBinding;
 import com.example.inmobiliariazaratemobile.model.InmuebleModel;
 
@@ -37,6 +38,14 @@ public class InmueblesFragment extends Fragment {
         vm = new ViewModelProvider(this).get(InmueblesViewModel.class);
         adapter = new InmueblesAdapter();
         b.rvInmuebles.setAdapter(adapter);
+
+        adapter.setOnItemClick(item -> {
+            Bundle args = new Bundle();
+            args.putSerializable("inmueble", item);
+            androidx.navigation.fragment.NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.action_nav_inmuebles_to_inmuebleDetalleFragment, args);
+        });
 
         vm.inmuebles.observe(getViewLifecycleOwner(), adapter::submitList);
         vm.cargar();
