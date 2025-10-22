@@ -102,10 +102,11 @@ public class ApiClient {
                 @Part("inmueble") RequestBody inmuebleJson
         );
 
+        // request/ApiClient.java  (dentro de InmoService)
+
         @PUT("api/Inmuebles/actualizar")
-        Call<InmuebleModel> actualizarDisponibilidad(
-                @Header("Authorization") String bearer,
-                @Body com.example.inmobiliariazaratemobile.request.dto.InmuebleDisponibleDto dto
-        );
+        Call<InmuebleModel> actualizarDisponible(@Header("Authorization") String token,
+                                                     @Body InmuebleModel inmueble);
+
     }
 }

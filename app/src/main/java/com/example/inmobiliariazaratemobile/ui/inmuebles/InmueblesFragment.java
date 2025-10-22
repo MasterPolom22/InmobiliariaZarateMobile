@@ -47,8 +47,16 @@ public class InmueblesFragment extends Fragment {
                     .navigate(R.id.action_nav_inmuebles_to_inmuebleDetalleFragment, args);
         });
 
+
+
         vm.inmuebles.observe(getViewLifecycleOwner(), adapter::submitList);
         vm.cargar();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (vm != null) vm.cargar(); // vuelve a pedir /api/Inmuebles
     }
 
     @Override public void onDestroyView() {
