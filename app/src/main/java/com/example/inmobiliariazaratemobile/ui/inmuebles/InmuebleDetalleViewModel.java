@@ -1,4 +1,4 @@
-// reemplaza TODO el ViewModel por esto
+
 package com.example.inmobiliariazaratemobile.ui.inmuebles;
 
 import android.app.Application;

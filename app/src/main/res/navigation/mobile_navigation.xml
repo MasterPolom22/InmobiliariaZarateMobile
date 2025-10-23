@@ -21,11 +21,14 @@
         android:id="@+id/nav_inmuebles"
         android:name="com.example.inmobiliariazaratemobile.ui.inmuebles.InmueblesFragment"
         android:label="@string/menu_inmuebles"
-        tools:layout="@layout/fragment_inmuebles" >
+        tools:layout="@layout/fragment_inmuebles" />
         <action
             android:id="@+id/action_nav_inmuebles_to_inmuebleDetalleFragment"
             app:destination="@id/inmuebleDetalleFragment" />
-    </fragment>
+        <action
+            android:id="@+id/action_nav_inmuebles_to_inmuebleAltaFragment"
+            app:destination="@id/inmuebleAltaFragment" />
+
 
     <fragment
         android:id="@+id/nav_inquilinos"
@@ -38,7 +41,6 @@
         android:name="com.example.inmobiliariazaratemobile.ui.contratos.ContratosFragment"
         android:label="@string/menu_contratos"
         tools:layout="@layout/fragment_contratos" />
-
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.inmobiliariazaratemobile.ui.logout.LogoutFragment"
@@ -52,5 +54,17 @@
         <action
             android:id="@+id/action_inmuebleDetalleFragment_to_nav_inmuebles2"
             app:destination="@id/nav_inmuebles" />
+
+    <fragment
+        android:id="@+id/inmuebleAltaFragment"
+        android:name="com.example.inmobiliariazaratemobile.ui.inmuebles.InmuebleAltaFragment"
+        android:label="Nuevo Inmueble"
+        tools:layout="@layout/fragment_inmueble_alta" />
+
+        <action
+            android:id="@+id/action_nav_inmuebles_to_inmuebleAltaFragment"
+            app:destination="@id/inmuebleAltaFragment"/>
+
+
     </fragment>
 </navigation>

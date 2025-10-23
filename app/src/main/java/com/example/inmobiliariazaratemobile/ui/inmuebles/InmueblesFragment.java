@@ -46,6 +46,10 @@ public class InmueblesFragment extends Fragment {
                     .findNavController(this)
                     .navigate(R.id.action_nav_inmuebles_to_inmuebleDetalleFragment, args);
         });
+        b.btnNuevoInmueble.setOnClickListener(v ->
+                androidx.navigation.fragment.NavHostFragment.findNavController(this)
+                        .navigate(R.id.inmuebleAltaFragment)
+        );
 
 
 
