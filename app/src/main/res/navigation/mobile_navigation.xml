@@ -55,16 +55,17 @@
             android:id="@+id/action_inmuebleDetalleFragment_to_nav_inmuebles2"
             app:destination="@id/nav_inmuebles" />
 
+
+
+
+    </fragment>
     <fragment
         android:id="@+id/inmuebleAltaFragment"
         android:name="com.example.inmobiliariazaratemobile.ui.inmuebles.InmuebleAltaFragment"
-        android:label="Nuevo Inmueble"
-        tools:layout="@layout/fragment_inmueble_alta" />
-
+        android:label="fragment_inmueble_alta"
+        tools:layout="@layout/fragment_inmueble_alta" >
         <action
-            android:id="@+id/action_nav_inmuebles_to_inmuebleAltaFragment"
-            app:destination="@id/inmuebleAltaFragment"/>
-
-
+            android:id="@+id/action_inmuebleAltaFragment_to_nav_inmuebles"
+            app:destination="@id/nav_inmuebles" />
     </fragment>
 </navigation>

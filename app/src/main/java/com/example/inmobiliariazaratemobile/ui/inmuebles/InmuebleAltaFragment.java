@@ -1,15 +1,13 @@
 package com.example.inmobiliariazaratemobile.ui.inmuebles;
 
-import android.net.Uri;
-import android.os.Bundle;
 import android.view.*;
+import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.bumptech.glide.Glide;
 import com.example.inmobiliariazaratemobile.databinding.FragmentInmuebleAltaBinding;
 
@@ -27,12 +25,15 @@ public class InmuebleAltaFragment extends Fragment {
             if (uri != null) vm.onImagenSeleccionada(uri);
         });
 
-        vm.imagenUri.observe(getViewLifecycleOwner(), uri -> {
-            Glide.with(this)
-                    .load(uri)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
-                    .error(android.R.drawable.stat_notify_error)
-                    .into(b.imgPreview);
+        vm.imagenUri.observe(getViewLifecycleOwner(), uri ->
+                Glide.with(this).load(uri)
+                        .placeholder(android.R.drawable.ic_menu_gallery)
+                        .error(android.R.drawable.stat_notify_error)
+                        .into(b.imgPreview)
+        );
+
+        vm.pickImageEvent.observe(getViewLifecycleOwner(), fire -> {
+            if (Boolean.TRUE.equals(fire)) pickImage.launch("image/*");
         });
 
         vm.status.observe(getViewLifecycleOwner(), s -> {
@@ -43,20 +44,20 @@ public class InmuebleAltaFragment extends Fragment {
             }
         });
 
-        b.btnSeleccionar.setOnClickListener(v -> pickImage.launch("image/*"));
-        b.btnGuardar.setOnClickListener(v ->
-                vm.guardar(
-                        String.valueOf(b.etDireccion.getText()),
-                        String.valueOf(b.etTipo.getText()),
-                        String.valueOf(b.etUso.getText()),
-                        String.valueOf(b.etAmbientes.getText()),
-                        String.valueOf(b.etSuperficie.getText()),
-                        String.valueOf(b.etLatitud.getText()),
-                        String.valueOf(b.etLongitud.getText()),
-                        String.valueOf(b.etValor.getText())
-                )
-        );
+        vm.msg.observe(getViewLifecycleOwner(), m -> {
+            if (m != null && !m.isEmpty())
+                android.widget.Toast.makeText(requireContext(), m, android.widget.Toast.LENGTH_SHORT).show();
+        });
+
+        b.btnSeleccionar.setOnClickListener(v -> vm.onSeleccionarImagenClick());
+        b.btnGuardar.setOnClickListener(v -> vm.onGuardarClick(
+                sval(b.etDireccion), sval(b.etTipo), sval(b.etUso),
+                sval(b.etAmbientes), sval(b.etSuperficie),
+                sval(b.etLatitud), sval(b.etLongitud), sval(b.etValor)
+        ));
 
         return b.getRoot();
     }
+
+    private String sval(android.widget.TextView t){ return String.valueOf(t.getText()); }
 }
