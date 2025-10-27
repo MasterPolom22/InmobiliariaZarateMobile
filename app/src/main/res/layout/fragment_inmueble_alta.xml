@@ -1,85 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inmuebles.InmuebleAltaFragment">
+    tools:context=".ui.inmuebles.InmuebleAltaFragment" >
 
-    <LinearLayout android:orientation="vertical" android:padding="16dp"
-        android:layout_width="match_parent" android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/etAmbientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Ambientes"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSuperficie" />
 
-        <ImageView
-            android:id="@+id/imgPreview" android:layout_width="match_parent"
-            android:layout_height="180dp" android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"/>
+    <EditText
+        android:id="@+id/etSuperficie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Superficie"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTipo" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSeleccionar"
-            android:text="Seleccionar imagen"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"/>
+    <EditText
+        android:id="@+id/etUso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="417dp"
+        android:ems="10"
+        android:hint="Uso"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDireccion" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDireccion" android:hint="Dirección"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/etTipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="417dp"
+        android:ems="10"
+        android:hint="Tipo"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDireccion"
+        app:layout_constraintVertical_bias="0.902" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTipo" android:hint="Tipo"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/etValor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="417dp"
+        android:ems="10"
+        android:hint="Valor"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDireccion"
+        app:layout_constraintVertical_bias="0.083" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUso" android:hint="Uso"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginTop="36dp"
+        android:text="Agregar Inmueble"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAmbientes" android:hint="Ambientes" android:inputType="number"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/etDireccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Direccion"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etSuperficie" android:hint="Superficie" android:inputType="numberDecimal"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <CheckBox
+        android:id="@+id/cbDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Disponible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAmbientes" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLatitud" android:hint="Latitud" android:inputType="numberDecimal"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btnFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="+Foto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.751"
+        app:layout_constraintStart_toEndOf="@+id/cbDisp"
+        app:layout_constraintTop_toBottomOf="@+id/etAmbientes" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLongitud" android:hint="Longitud" android:inputType="numberDecimal"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btnCargar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cargar Inmueble"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgView"
+        app:layout_constraintVertical_bias="0.385" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etValor" android:hint="Valor" android:inputType="numberDecimal"
-                android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGuardar"
-            android:text="Guardar"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
-    </LinearLayout>
-
-</ScrollView>
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAmbientes"
+        tools:src="@tools:sample/avatars" />
+</androidx.constraintlayout.widget.ConstraintLayout>

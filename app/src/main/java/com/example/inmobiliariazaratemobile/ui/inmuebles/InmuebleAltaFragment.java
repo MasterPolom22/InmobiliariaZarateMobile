@@ -1,11 +1,19 @@
 package com.example.inmobiliariazaratemobile.ui.inmuebles;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.*;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import com.bumptech.glide.Glide;
@@ -13,51 +21,71 @@ import com.example.inmobiliariazaratemobile.databinding.FragmentInmuebleAltaBind
 
 public class InmuebleAltaFragment extends Fragment {
 
-    private FragmentInmuebleAltaBinding b;
-    private InmuebleAltaViewModel vm;
-    private ActivityResultLauncher<String> pickImage;
+    private InmuebleAltaViewModel mViewModel;
+    private FragmentInmuebleAltaBinding binding;
+    private ActivityResultLauncher<Intent> arl;
+    private Intent intent;
 
-    @Override public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        b = FragmentInmuebleAltaBinding.inflate(inflater, container, false);
-        vm = new ViewModelProvider(this).get(InmuebleAltaViewModel.class);
+    public static InmuebleAltaFragment newInstance() {
+        return new InmuebleAltaFragment();
+    }
 
-        pickImage = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-            if (uri != null) vm.onImagenSeleccionada(uri);
-        });
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        mViewModel = new ViewModelProvider(this).get(InmuebleAltaViewModel.class);
+        binding = FragmentInmuebleAltaBinding.inflate(getLayoutInflater());
+        abrirGaleria();
 
-        vm.imagenUri.observe(getViewLifecycleOwner(), uri ->
-                Glide.with(this).load(uri)
-                        .placeholder(android.R.drawable.ic_menu_gallery)
-                        .error(android.R.drawable.stat_notify_error)
-                        .into(b.imgPreview)
-        );
+        binding.btnFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arl.launch(intent);
 
-        vm.pickImageEvent.observe(getViewLifecycleOwner(), fire -> {
-            if (Boolean.TRUE.equals(fire)) pickImage.launch("image/*");
-        });
-
-        vm.status.observe(getViewLifecycleOwner(), s -> {
-            boolean loading = s == InmuebleAltaViewModel.Status.LOADING;
-            b.btnGuardar.setEnabled(!loading);
-            if (s == InmuebleAltaViewModel.Status.SUCCESS) {
-                NavHostFragment.findNavController(this).popBackStack();
             }
         });
 
-        vm.msg.observe(getViewLifecycleOwner(), m -> {
-            if (m != null && !m.isEmpty())
-                android.widget.Toast.makeText(requireContext(), m, android.widget.Toast.LENGTH_SHORT).show();
+        mViewModel.getMuri().observe(getViewLifecycleOwner(), new Observer<Uri>() {
+            @Override
+            public void onChanged(Uri uri) {
+                binding.imgView.setImageURI(uri);
+            }
         });
 
-        b.btnSeleccionar.setOnClickListener(v -> vm.onSeleccionarImagenClick());
-        b.btnGuardar.setOnClickListener(v -> vm.onGuardarClick(
-                sval(b.etDireccion), sval(b.etTipo), sval(b.etUso),
-                sval(b.etAmbientes), sval(b.etSuperficie),
-                sval(b.etLatitud), sval(b.etLongitud), sval(b.etValor)
-        ));
+        binding.btnCargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {//String direccion, String valor, String tipo, String uso, String ambientes, String superficie, boolean disponible
+                mViewModel.cargarInmueble(binding.etDireccion.getText().toString(),
+                        binding.etValor.getText().toString(),
+                        binding.etTipo.getText().toString(),
+                        binding.etUso.getText().toString(),
+                        binding.etAmbientes.getText().toString(),
+                        binding.etSuperficie.getText().toString(),
+                        binding.cbDisp.isChecked());
+            }
+        });
 
-        return b.getRoot();
+        return binding.getRoot();
     }
 
-    private String sval(android.widget.TextView t){ return String.valueOf(t.getText()); }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(InmuebleAltaViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+    private void abrirGaleria() {
+        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//Es para abrir la galeria
+        arl = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                Log.d("AgregarInmuebleFragment", "Result: " + result);
+                mViewModel.recibirFoto(result);
+
+            }
+        });
+    }
+
+
 }

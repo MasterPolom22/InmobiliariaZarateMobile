@@ -97,12 +97,12 @@ public class ApiClient {
         @Multipart
         @POST("api/Inmuebles/cargar")
         Call<InmuebleModel> cargarInmueble(
-                @Header("Authorization") String bearer,
+                @Header("Authorization") String token,
                 @Part MultipartBody.Part imagen,
-                @Part("inmueble") RequestBody inmuebleJson
+                @Part("inmueble") RequestBody inmueble
         );
 
-        // request/ApiClient.java  (dentro de InmoService)
+
 
         @PUT("api/Inmuebles/actualizar")
         Call<InmuebleModel> actualizarDisponible(@Header("Authorization") String token,
