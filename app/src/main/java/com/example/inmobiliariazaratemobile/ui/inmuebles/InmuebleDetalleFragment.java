@@ -1,4 +1,4 @@
-// reemplaza TODO el fragment por esto
+
 package com.example.inmobiliariazaratemobile.ui.inmuebles;
 
 import android.os.Bundle;
@@ -32,7 +32,7 @@ public class InmuebleDetalleFragment extends Fragment {
             b.tvAmbientesI.setText(String.valueOf(i.getAmbientes()));
             b.tvLatitudI.setText(String.valueOf(i.getLatitud()));
             b.tvLongitudI.setText(String.valueOf(i.getLongitud()));
-            b.tvValorI.setText(String.valueOf(i.getValor()));
+            b.tvValorI.setText(String.valueOf(i.getPrecio()));
             Glide.with(this)
                     .load(ApiClient.BASE_URL + i.getImagen())
                     .placeholder(android.R.drawable.ic_menu_gallery)

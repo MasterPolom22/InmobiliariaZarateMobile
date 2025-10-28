@@ -33,7 +33,7 @@ public class InmueblesAdapter extends ListAdapter<InmuebleModel, InmueblesAdapte
                 }
                 @Override public boolean areContentsTheSame(@NonNull InmuebleModel a, @NonNull InmuebleModel b) {
                     return a.getDireccion().equals(b.getDireccion())
-                            && a.getValor() == b.getValor()
+                            && a.getPrecio() == b.getPrecio()
                             && a.isDisponible() == b.isDisponible();
                 }
             };
@@ -48,7 +48,7 @@ public class InmueblesAdapter extends ListAdapter<InmuebleModel, InmueblesAdapte
         InmuebleModel it = getItem(pos);
         h.txtDireccion.setText(it.getDireccion());
         h.txtTipoUso.setText(it.getTipo() + " • " + it.getUso() + " • " + it.getAmbientes() + " amb");
-        h.txtValor.setText("$ " + String.format(java.util.Locale.US,"%.2f", it.getValor()));
+        h.txtValor.setText("$ " + String.format(java.util.Locale.US,"%.2f", it.getPrecio()));
 
         String url = it.getImagen();
         Glide.with(h.img.getContext())

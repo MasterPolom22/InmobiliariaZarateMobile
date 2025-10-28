@@ -36,10 +36,9 @@ public class InmuebleDetalleViewModel extends AndroidViewModel {
         body.setUso(cur.getUso());
         body.setTipo(cur.getTipo());
         body.setAmbientes(cur.getAmbientes());
-        body.setSuperficie(cur.getSuperficie());
         body.setLatitud(cur.getLatitud());
         body.setLongitud(cur.getLongitud());
-        body.setValor(cur.getValor());
+        body.setPrecio(cur.getPrecio());
         body.setImagen(cur.getImagen());
         body.setIdPropietario(cur.getIdPropietario());
         body.setDuenio(cur.getDuenio());

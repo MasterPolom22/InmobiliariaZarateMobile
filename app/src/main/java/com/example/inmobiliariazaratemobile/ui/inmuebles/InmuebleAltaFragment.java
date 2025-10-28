@@ -54,13 +54,12 @@ public class InmuebleAltaFragment extends Fragment {
 
         binding.btnCargar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//String direccion, String valor, String tipo, String uso, String ambientes, String superficie, boolean disponible
+            public void onClick(View v) {//String direccion, String valor, String tipo, String uso, String ambientes, boolean disponible
                 mViewModel.cargarInmueble(binding.etDireccion.getText().toString(),
                         binding.etValor.getText().toString(),
                         binding.etTipo.getText().toString(),
                         binding.etUso.getText().toString(),
                         binding.etAmbientes.getText().toString(),
-                        binding.etSuperficie.getText().toString(),
                         binding.cbDisp.isChecked());
             }
         });

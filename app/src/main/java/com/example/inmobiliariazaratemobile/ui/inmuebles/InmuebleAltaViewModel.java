@@ -58,15 +58,15 @@ public class InmuebleAltaViewModel extends AndroidViewModel {
         }
     }
 
-    public void cargarInmueble(String direccion, String valor, String tipo, String uso, String ambientes, String superficie, boolean disponible){
+    public void cargarInmueble(String direccion, String valor, String tipo, String uso, String ambientes, boolean disponible){
         int superficiePars, ambientesPars;
         double precio;
 
         try{
             precio = Double.parseDouble(valor);
-            superficiePars = Integer.parseInt(superficie);
+
             ambientesPars = Integer.parseInt(ambientes);
-            if(direccion.isEmpty() || tipo.isEmpty() || uso.isEmpty() || ambientes.isEmpty() || superficie.isEmpty() || valor.isEmpty()){
+            if(direccion.isEmpty() || tipo.isEmpty() || uso.isEmpty() || ambientes.isEmpty()  || valor.isEmpty()){
                 Toast.makeText(getApplication(), "Debe ingresar todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -78,17 +78,16 @@ public class InmuebleAltaViewModel extends AndroidViewModel {
 
             InmuebleModel inmueble = new InmuebleModel();
             inmueble.setDireccion(direccion);
-            inmueble.setValor(precio);
+            inmueble.setPrecio(precio);
             inmueble.setTipo(tipo);
             inmueble.setUso(uso);
             inmueble.setAmbientes(ambientesPars);
-            inmueble.setSuperficie(superficiePars);
             inmueble.setDisponible(disponible);
 
             //Convertir en base a la uri
             byte[] imagen = transformarImagen();
             String inmuebleJson = new Gson().toJson(inmueble);
-            RequestBody inmuebleBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), inmuebleJson);
+            RequestBody inmuebleBody = RequestBody.create(MediaType.parse("application/json"), inmuebleJson);
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), imagen);
 
 
@@ -98,7 +97,7 @@ public class InmuebleAltaViewModel extends AndroidViewModel {
 
             ApiClient.InmoService inmoService = ApiClient.getInmoService();
             String token = ApiClient.leerToken(getApplication());
-            Call<InmuebleModel> call = inmoService.cargarInmueble("Bearer "+ token, imagenPart, inmuebleBody);
+            Call<InmuebleModel> call = inmoService.cargarInmueble( token, imagenPart, inmuebleBody);
             call.enqueue(new Callback<InmuebleModel>() {
                 @Override
                 public void onResponse(Call<InmuebleModel> call, Response<InmuebleModel> response) {
