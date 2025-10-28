@@ -84,15 +84,23 @@ public class ApiClient {
                                   @Field("currentPassword") String currentPassword,
                                   @Field("newPassword") String newPassword);
 
+        @PUT("api/Inmuebles/actualizar")
+        Call<InmuebleModel> actualizarDisponible(@Header("Authorization") String token,
+                                                 @Body InmuebleModel inmueble);
+
         @GET("api/Inmuebles")
         Call<List<InmuebleModel>> listarInmuebles(@Header("Authorization") String token);
 
-        @PUT("api/Inmuebles/actualizar")
-        Call<InmuebleModel> actualizarInmueble(@Header("Authorization") String token, @Body InmuebleModel inmueble);
 
-        // No usar aún (pasos 2 y 3)
+
+        //  usar pasos 2 y 3
         @GET("api/Inmuebles/GetContratoVigente")
         Call<List<InmuebleModel>> listarConContrato(@Header("Authorization") String bearer);
+
+        @GET("api/Inmuebles/GetContratoVigente")
+        Call<List<InmuebleModel>> listarConContratoVigente(@Header("Authorization") String token);
+
+
 
         @Multipart
         @POST("api/Inmuebles/cargar")
@@ -104,9 +112,9 @@ public class ApiClient {
 
 
 
-        @PUT("api/Inmuebles/actualizar")
-        Call<InmuebleModel> actualizarDisponible(@Header("Authorization") String token,
-                                                     @Body InmuebleModel inmueble);
+
+
+
 
 
 
