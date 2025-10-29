@@ -3,6 +3,7 @@ package com.example.inmobiliariazaratemobile.request;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.inmobiliariazaratemobile.model.ContratoModel;
 import com.example.inmobiliariazaratemobile.model.InmuebleModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -109,6 +110,13 @@ public class ApiClient {
                 @Part MultipartBody.Part imagen,
                 @Part("inmueble") RequestBody inmueble
         );
+
+
+
+        @GET("api/Contratos/vigentePorInmueble/{id}")
+        Call<ContratoModel> contratoVigente(@Header("Authorization") String token, @Path("id") int idInmueble);
+
+
 
 
 

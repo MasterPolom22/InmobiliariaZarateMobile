@@ -19,36 +19,51 @@ import com.example.inmobiliariazaratemobile.databinding.FragmentInmueblesBinding
 import com.example.inmobiliariazaratemobile.databinding.FragmentInquilinosBinding;
 import com.example.inmobiliariazaratemobile.ui.inmuebles.InmueblesViewModel;
 
-public class InquilinosFragment extends Fragment {
+import android.view.*;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.inmobiliariazaratemobile.databinding.ItemInquilinoBinding;
+import com.example.inmobiliariazaratemobile.model.InmuebleModel;
 
-    private FragmentInquilinosBinding b;
-    private InquilinosViewModel vm;
-    private InmuebleVigAdapter adapter;
+public class AlquiladoAdapter extends ListAdapter<InmuebleModel, AlquiladoAdapter.VH> {
 
-    @Override public View onCreateView(LayoutInflater inf, ViewGroup c, Bundle s) {
-        b = FragmentInquilinosBinding.inflate(inf, c, false);
-        vm = new ViewModelProvider(this).get(InquilinosViewModel.class);
+    public interface OnClick { void onItem(InmuebleModel item); }
+    private final OnClick onClick;
 
-        adapter = new InmuebleVigAdapter(item -> {
-            // Navega al detalle del inquilino del inmueble seleccionado
-            // Pasa idInmueble o el objeto completo (Serializable)
-            Bundle args = new Bundle();
-            args.putInt("inmuebleId", item.getIdInmueble());
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_inquilinos_to_inquilinoDetalle, args);
-        });
-        b.rv.setAdapter(adapter);
-        b.swipe.setOnRefreshListener(vm::cargar);
-
-        vm.items.observe(getViewLifecycleOwner(), list -> {
-            adapter.submitList(list);
-            b.swipe.setRefreshing(false);
-            b.empty.setVisibility(list==null || list.isEmpty()? View.VISIBLE: View.GONE);
-        });
-        vm.status.observe(getViewLifecycleOwner(), st -> b.progress.setVisibility(st==InquilinosViewModel.Status.LOADING? View.VISIBLE: View.GONE));
-
-        vm.cargar();
-        return b.getRoot();
+    public AlquiladoAdapter(OnClick onClick) {
+        super(DIFF);
+        this.onClick = onClick;
     }
 
+    private static final DiffUtil.ItemCallback<InmuebleModel> DIFF =
+            new DiffUtil.ItemCallback<InmuebleModel>() {
+                @Override public boolean areItemsTheSame(@NonNull InmuebleModel a, @NonNull InmuebleModel b) {
+                    return a.getIdInmueble()==b.getIdInmueble();
+                }
+                @Override public boolean areContentsTheSame(@NonNull InmuebleModel a, @NonNull InmuebleModel b) {
+                    return a.getDireccion().equals(b.getDireccion())
+                            && a.getTipo().equals(b.getTipo())
+                            && a.getPrecio()==b.getPrecio();
+                }
+            };
+
+    @NonNull @Override public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemInquiladoBinding b = ItemInquiladoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new VH(b);
+    }
+
+    @Override public void onBindViewHolder(@NonNull VH h, int pos) {
+        InmuebleModel it = getItem(pos);
+        h.b.tvDireccion.setText(it.getDireccion());
+        h.b.tvTipo.setText(it.getTipo());
+        h.b.tvValor.setText(String.valueOf(it.getValor()));
+        h.itemView.setOnClickListener(v -> onClick.onItem(it));
+    }
+
+    static class VH extends RecyclerView.ViewHolder {
+        final ItemInquiladoBinding b;
+        VH(ItemInquiladoBinding b){ super(b.getRoot()); this.b = b; }
+    }
 }
