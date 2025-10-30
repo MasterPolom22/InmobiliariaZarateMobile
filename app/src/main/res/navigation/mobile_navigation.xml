@@ -34,7 +34,11 @@
         android:id="@+id/nav_inquilinos"
         android:name="com.example.inmobiliariazaratemobile.ui.inquilinos.InquilinosFragment"
         android:label="@string/menu_inquilinos"
-        tools:layout="@layout/fragment_inquilinos" />
+        tools:layout="@layout/fragment_inquilinos" >
+        <action
+            android:id="@+id/action_nav_inquilinos_to_inquilinoDetalleFragment"
+            app:destination="@id/inquilinoDetalleFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_contratos"
@@ -67,5 +71,12 @@
         <action
             android:id="@+id/action_inmuebleAltaFragment_to_nav_inmuebles"
             app:destination="@id/nav_inmuebles" />
+
+
+    <fragment
+        android:id="@+id/inquilinoDetalleFragment"
+        android:name="com.example.inmobiliariazaratemobile.ui.inquilinos.InquilinoDetalleFragment"
+        android:label="Detalle Inquilino"/>
     </fragment>
+
 </navigation>
